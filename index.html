@@ -28,6 +28,7 @@
   .hidden { display:none; }
   #banner { padding:12px 16px; border-radius:8px; margin-bottom:20px; font-weight:600; }
   #banner.warn { background:#78350f; } #banner.done { background:#14532d; }
+  a.cc { background:#38bdf8; color:#04283a; padding:8px 14px; border-radius:8px; font-weight:600; text-decoration:none; font-size:14px; }
   .actions { display:flex; gap:12px; flex-wrap:wrap; }
 </style>
 </head>
@@ -35,7 +36,7 @@
 
 <header>
   <h1>ADSA Practice Test &mdash; C++</h1>
-  <div id="timer">01:25:00</div>
+  <div style="display:flex;gap:16px;align-items:center"><a class="cc" href="https://www.codechef.com/" target="_blank" rel="noopener">Open CodeChef</a><div id="timer">01:25:00</div></div>
 </header>
 
 <main>
@@ -69,6 +70,7 @@ const QUESTIONS = [
   {
     title: "Question 1: Height of Binary Tree",
     marks: "",
+    link: "",   // optional: paste the CodeChef problem link for this question
     text: `Given a connected binary tree with N nodes, find the height of it.
 (Note: The height of a binary tree is the number of edges between the tree's root and its furthest leaf.)
 
@@ -129,6 +131,7 @@ class Solution {
   {
     title: "Question 2: Music Player",
     marks: "",
+    link: "",
     text: `Implement the functionality of a music player using a doubly linked list.
 
 The functionality of a playlist queue needs to be implemented, i.e., adding a song to the queue, playing the next song, playing the previous song, switching to a song, etc.
@@ -300,7 +303,11 @@ function render() {
         state.answers[i] = ta.value; save();
       }
     });
-    card.append(h, t, ta);
+    const lk = document.createElement("a");
+    lk.className = "cc"; lk.textContent = "Open on CodeChef";
+    lk.href = q.link || "https://www.codechef.com/"; lk.target = "_blank"; lk.rel = "noopener";
+    lk.style.display = "inline-block"; lk.style.marginBottom = "12px";
+    card.append(h, t, lk, ta);
     wrap.appendChild(card);
   });
 }
