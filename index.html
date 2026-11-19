@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ADSA Practice Test (C++)</title>
+<style>
+  :root { --bg:#0f172a; --card:#1e293b; --text:#e2e8f0; --muted:#94a3b8; --accent:#38bdf8; --warn:#f59e0b; --bad:#ef4444; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, sans-serif; background:var(--bg); color:var(--text); }
+  header { position:sticky; top:0; z-index:10; display:flex; justify-content:space-between; align-items:center;
+           padding:12px 24px; background:#020617; border-bottom:1px solid #334155; }
+  header h1 { font-size:18px; margin:0; }
+  #timer { font-size:26px; font-weight:700; font-variant-numeric:tabular-nums; color:var(--accent); }
+  #timer.warn { color:var(--warn); } #timer.bad { color:var(--bad); }
+  main { max-width:960px; margin:24px auto; padding:0 16px 60px; }
+  .card { background:var(--card); border-radius:12px; padding:20px; margin-bottom:24px; }
+  .card h2 { margin-top:0; font-size:17px; color:var(--accent); }
+  .q-text { white-space:pre-wrap; line-height:1.55; margin-bottom:14px; }
+  textarea { width:100%; min-height:340px; background:#0b1220; color:#e2e8f0; border:1px solid #334155; border-radius:8px;
+             padding:12px; font-family: ui-monospace, Menlo, Consolas, monospace; font-size:14px; line-height:1.5; tab-size:4; resize:vertical; }
+  textarea:disabled { opacity:.7; }
+  button { background:var(--accent); color:#04283a; border:0; border-radius:8px; padding:10px 20px; font-size:15px; font-weight:600; cursor:pointer; }
+  button.secondary { background:#334155; color:var(--text); }
+  button:disabled { opacity:.5; cursor:not-allowed; }
+  #start-screen { text-align:center; padding:60px 20px; }
+  #start-screen ul { display:inline-block; text-align:left; color:var(--muted); line-height:1.8; }
+  .hidden { display:none; }
+  #banner { padding:12px 16px; border-radius:8px; margin-bottom:20px; font-weight:600; }
+  #banner.warn { background:#78350f; } #banner.done { background:#14532d; }
+  .actions { display:flex; gap:12px; flex-wrap:wrap; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ADSA Practice Test &mdash; C++</h1>
+  <div id="timer">01:25:00</div>
+</header>
+
+<main>
+  <div id="start-screen" class="card">
+    <h2>Instructions</h2>
+    <ul>
+      <li>Total time: <b>1 hour 25 minutes</b></li>
+      <li>2 questions, write your answers in C++</li>
+      <li>Timer keeps running even if you refresh the page</li>
+      <li>Answers auto-save as you type</li>
+      <li>When time ends, the test locks and your answers download automatically</li>
+    </ul>
+    <p><button id="start-btn">Start Test</button></p>
+  </div>
+
+  <div id="test" class="hidden">
+    <div id="banner" class="hidden"></div>
+    <div id="questions"></div>
+    <div class="actions">
+      <button id="submit-btn">Submit Test</button>
+      <button class="secondary" id="download-btn">Download Answers</button>
+    </div>
+  </div>
+</main>
+
+<script>
+/* ============================================================
+   EDIT YOUR QUESTIONS HERE (only these two entries)
+   ============================================================ */
+const QUESTIONS = [
+  {
+    title: "Question 1: Height of Binary Tree",
+    marks: "",
+    text: `Given a connected binary tree with N nodes, find the height of it.
+(Note: The height of a binary tree is the number of edges between the tree's root and its furthest leaf.)
+
+For example, a tree with edges 1-2 (left), 1-3 (right), 3-4 (left), 3-5 (right) has height 2.
+
+            1
+          /   \\
+         2     3
+              / \\
+             4   5
+
+Hint: While traversing the tree, you will have to store the height of the children and use that to calculate the height of the parent.
+
+Input Format
+- The first line contains a single integer N, the number of nodes in the binary tree.
+- The next N-1 lines contain three space separated characters p_i, c_i, R_i describing the edges. p_i is an integer denoting the parent node of the i-th edge, c_i is the child node, and the letter R_i tells whether the child is a left or right child: it is L if c_i is the left child of p_i, else R.
+
+Output Format
+Output on a single line, the height of the given binary tree.
+
+Constraints
+- 1 <= N <= 10000
+- 1 <= p_i, c_i <= 100000
+- R_i = L or R
+- All p_i's and c_i's are distinct.
+
+Sample Input:
+5
+1 2 L
+1 3 R
+3 4 L
+3 5 R
+
+Sample Output:
+2
+
+Complete the function heightOfBinaryTree(Node* root). The Node structure is given in the comment.`,
+    starter: `/*
+struct Node {
+    int val;
+    Node *left;
+    Node *right;
+
+    Node(int node_value) {
+        val = node_value;
+        left = right = NULL;
+    }
+}; */
+
+class Solution {
+  public:
+    int heightOfBinaryTree(Node* root) {
+        // write your code here
+    }
+};
+`
+  },
+  {
+    title: "Question 2: Music Player",
+    marks: "",
+    text: `Implement the functionality of a music player using a doubly linked list.
+
+The functionality of a playlist queue needs to be implemented, i.e., adding a song to the queue, playing the next song, playing the previous song, switching to a song, etc.
+
+You need to complete the following functions:
+1. addSong(int songId): Add the songId to the end of the list.
+2. playNext(): Go to the next song in the list.
+3. playPrev(): Go to the previous song in the list.
+4. switchSong(int songId): Find in the list where this songId is present, go to that song and continue the playlist from there. (In playlist 1<->2<->3<->4<->5, if the current song is 4 and the function is called for 2, the current song is stopped and the order is now 2->3->4->5.)
+5. current(): Return the songId of the song currently playing.
+
+Assumptions:
+1. playNext will not be called from the last song.
+2. playPrev will not be called from the first song.
+3. The songId provided in switchSong is always present in the list.
+4. addSong will not be called for a songId which is already present in the list.
+5. current will not be called when the list is empty.
+
+Note: Until the next function is called, the current song will automatically be the first songId added in the list.
+
+The problem input is query-based:
+1 : An integer songId is provided, addSong(songId) is called.
+2 : playNext() is called.
+3 : playPrev() is called.
+4 : An integer songId is provided, switchSong(songId) is called.
+5 : current() is called and its value is printed.
+
+Sample Input:
+16
+1 1
+1 2
+1 3
+5
+2
+5
+3
+5
+1 4
+1 5
+2
+2
+4 1
+5
+2
+5
+
+Sample Output:
+2
+1
+1
+2`,
+    starter: `#include <iostream>
+#include <unordered_map>
+
+using namespace std;
+
+// Node structure for doubly linked list
+struct Node {
+    int songId;
+    Node* prev;
+    Node* next;
+
+    Node(int id) : songId(id), prev(nullptr), next(nullptr) {}
+};
+
+class MusicPlayer {
+    Node* head;
+    Node* tail;
+    Node* currentSong;
+    unordered_map<int, Node*> position;
+
+public:
+    MusicPlayer() : head(nullptr), tail(nullptr), currentSong(nullptr) {}
+
+    // Function to add a song to the end of the list
+    void addSong(int songId) {
+        // write your code here
+    }
+
+    // Function to play the next song
+    void playNext() {
+        // write your code here
+    }
+
+    // Function to play the previous song
+    void playPrev() {
+        // write your code here
+    }
+
+    // Function to switch to a specific song
+    void switchSong(int songId) {
+        // write your code here
+    }
+
+    // Function to return the songId of the current song playing
+    int current() {
+        // write your code here
+    }
+};
+
+int main() {
+    MusicPlayer player;
+    int query, songId;
+    int q;
+    cin >> q;
+    while (q--) {
+        cin >> query;
+
+        switch (query) {
+            case 1:
+                cin >> songId;
+                player.addSong(songId);
+                break;
+            case 2:
+                player.playNext();
+                break;
+            case 3:
+                player.playPrev();
+                break;
+            case 4:
+                cin >> songId;
+                player.switchSong(songId);
+                break;
+            case 5:
+                cout << player.current() << endl;
+                break;
+            default:
+                cout << "Invalid query!" << endl;
+        }
+    }
+
+    return 0;
+}
+`
+  }
+];
+const DURATION_SEC = 85 * 60;   // 1 hour 25 minutes
+/* ============================================================ */
+
+const KEY = "adsa_test_v1";
+const $ = id => document.getElementById(id);
+let state = load() || { start: null, submitted: false, answers: QUESTIONS.map(q => q.starter) };
+let tick = null;
+
+function load() { try { return JSON.parse(localStorage.getItem(KEY)); } catch (e) { return null; } }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+function render() {
+  const wrap = $("questions");
+  wrap.innerHTML = "";
+  QUESTIONS.forEach((q, i) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    const h = document.createElement("h2");
+    h.textContent = q.title + (q.marks ? "  (" + q.marks + ")" : "");
+    const t = document.createElement("div");
+    t.className = "q-text";
+    t.textContent = q.text;
+    const ta = document.createElement("textarea");
+    ta.spellcheck = false;
+    ta.value = state.answers[i];
+    ta.addEventListener("input", () => { state.answers[i] = ta.value; save(); });
+    ta.addEventListener("keydown", e => {
+      if (e.key === "Tab") {
+        e.preventDefault();
+        const s = ta.selectionStart, en = ta.selectionEnd;
+        ta.value = ta.value.slice(0, s) + "    " + ta.value.slice(en);
+        ta.selectionStart = ta.selectionEnd = s + 4;
+        state.answers[i] = ta.value; save();
+      }
+    });
+    card.append(h, t, ta);
+    wrap.appendChild(card);
+  });
+}
+
+function fmt(sec) {
+  sec = Math.max(0, sec);
+  const h = String(Math.floor(sec / 3600)).padStart(2, "0");
+  const m = String(Math.floor((sec % 3600) / 60)).padStart(2, "0");
+  const s = String(sec % 60).padStart(2, "0");
+  return h + ":" + m + ":" + s;
+}
+
+function showBanner(msg, cls) {
+  const b = $("banner");
+  b.textContent = msg; b.className = cls;
+}
+
+function update() {
+  if (state.submitted) return;
+  const left = DURATION_SEC - Math.floor((Date.now() - state.start) / 1000);
+  const tm = $("timer");
+  tm.textContent = fmt(left);
+  tm.className = left <= 300 ? "bad" : left <= 600 ? "warn" : "";
+  if (left === 600) showBanner("10 minutes remaining.", "warn");
+  if (left === 300) showBanner("5 minutes remaining!", "warn");
+  if (left <= 0) finish("Time is up. Your answers were submitted automatically.");
+}
+
+function begin() {
+  $("start-screen").classList.add("hidden");
+  $("test").classList.remove("hidden");
+  render();
+  if (state.submitted) { lock("Test already submitted."); return; }
+  tick = setInterval(update, 500);
+  update();
+}
+
+function lock(msg) {
+  document.querySelectorAll("textarea").forEach(t => t.disabled = true);
+  $("submit-btn").disabled = true;
+  showBanner(msg, "done");
+}
+
+function download() {
+  let out = "ADSA Practice Test - C++ answers\nSaved: " + new Date().toLocaleString() + "\n\n";
+  QUESTIONS.forEach((q, i) => {
+    out += "=".repeat(60) + "\n" + q.title + "\n" + q.text + "\n" + "-".repeat(60) + "\n" + state.answers[i] + "\n\n";
+  });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([out], { type: "text/plain" }));
+  a.download = "adsa-test-answers.txt";
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+function finish(msg) {
+  if (state.submitted) return;
+  state.submitted = true; save();
+  clearInterval(tick);
+  $("timer").textContent = "00:00:00";
+  lock(msg);
+  download();
+}
+
+$("start-btn").addEventListener("click", () => {
+  if (!state.start) { state.start = Date.now(); save(); }
+  begin();
+});
+$("submit-btn").addEventListener("click", () => {
+  if (confirm("Submit the test now? You cannot edit after this.")) finish("Test submitted. Answers downloaded.");
+});
+$("download-btn").addEventListener("click", download);
+
+// Resume if a test is already in progress (refresh-safe)
+if (state.start) begin();
+</script>
+</body>
+</html>
