@@ -16,7 +16,6 @@
   .q-btn { background:#38bdf8; color:#04283a; }
   .q-btn:disabled, #finish:disabled { opacity:.4; cursor:not-allowed; }
   #finish { background:#334155; color:#e2e8f0; margin-top:auto; }
-  #start { background:#22c55e; color:#052e16; font-size:18px; padding:14px 28px; }
   #main { margin-left:200px; padding:36px; max-width:880px; }
   .card { background:#1e293b; border-radius:12px; padding:20px; margin-bottom:20px; line-height:1.6; }
   .card h2 { margin-top:0; color:#38bdf8; font-size:18px; }
@@ -32,27 +31,17 @@
   <div class="lbl">Time left</div>
   <div id="timer">01:20:00</div>
   <div class="lbl">Questions</div>
-  <button class="q-btn" id="q0" disabled>Q1 &middot; Height of Binary Tree</button>
-  <button class="q-btn" id="q1" disabled>Q2 &middot; Music Player</button>
-  <button id="finish" disabled>Finish test</button>
+  <button class="q-btn" id="q0">Q1 &middot; Height of Binary Tree</button>
+  <button class="q-btn" id="q1">Q2 &middot; Music Player</button>
+  <button id="finish">Finish test</button>
 </div>
 
 <div id="main">
-  <div class="card" id="intro">
-    <h2>ADSA Practice Test &mdash; C++</h2>
-    <ul>
-      <li>Time: <b>1 hour 20 minutes</b></li>
-      <li>2 questions, solved and submitted on CodeChef in <b>C++</b></li>
-      <li>Q1: <b>Height of Binary Tree</b> &mdash; complete <code>heightOfBinaryTree(Node* root)</code></li>
-      <li>Q2: <b>Practice - Music Player</b> &mdash; complete <code>addSong, playNext, playPrev, switchSong, current</code> using a doubly linked list</li>
-      <li>Each question button opens CodeChef in its own window. This timer stays visible on the left.</li>
-      <li>Log in to CodeChef in the first window if it asks. Then open the question from your ADSA course.</li>
-      <li>When time is up, the CodeChef windows close and Safe Exam Browser quits.</li>
-    </ul>
-    <button id="start">Start Test</button>
-  </div>
-  <div class="card hidden" id="running">
-    <h2>Test running</h2>
+  <div class="card" id="running">
+    <h2>ADSA Practice Test &mdash; C++ &middot; 1 hour 20 minutes</h2>
+    <p>The timer started when the exam opened. CodeChef opens in its own window; this timer stays visible on the left.</p>
+    <p>Log in to CodeChef (Continue with Google). It then takes you straight to your ADSA course.</p>
+    <p id="blocked" class="hidden"><button class="q-btn" id="openNow">CodeChef did not open &mdash; click here to open it</button></p>
     <p>Use the buttons on the left to open each question on CodeChef. Write your code in CodeChef's editor, then Run and Submit there.</p>
     <p>If a question opens on the course page, find it in the list: <b>Height of Binary Tree</b> and <b>Practice - Music Player</b>.</p>
   </div>
@@ -64,6 +53,7 @@
 const DURATION_SEC = 80 * 60;   // 1 hour 20 minutes
 const COURSE = "https://www.codechef.com/learn/course/cu-adsa-sem3-2026-b1";
 const LINKS = [COURSE, COURSE]; // replace with each problem's exact link if you want a direct jump
+const LOGIN = "https://www.codechef.com/login?destination=/learn/course/cu-adsa-sem3-2026-b1";
 const QUIT_URL = "https://adityasingh31102005-hash.github.io/adsa-test/quit.html";
 const KEY = "adsa_test_v2";
 
@@ -79,10 +69,11 @@ function fmt(s) {
   return [Math.floor(s / 3600), Math.floor(s % 3600 / 60), s % 60].map(n => String(n).padStart(2, "0")).join(":");
 }
 
-function openQ(i) {
+function openQ(i, url) {
   const w = screen.availWidth, h = screen.availHeight;
   if (wins[i] && !wins[i].closed) { wins[i].focus(); return; }
-  wins[i] = window.open(LINKS[i], "q" + i, "left=200,top=0,width=" + (w - 200) + ",height=" + h);
+  wins[i] = window.open(url || LINKS[i], "q" + i, "left=200,top=0,width=" + (w - 200) + ",height=" + h);
+  if (!wins[i]) $("blocked").classList.remove("hidden");
 }
 
 function end(msg) {
@@ -103,16 +94,13 @@ function update() {
 }
 
 function run() {
-  $("intro").classList.add("hidden");
-  $("running").classList.remove("hidden");
-  ["q0", "q1", "finish"].forEach(id => $(id).disabled = false);
   update();
   tick = setInterval(update, 500);
 }
 
-$("start").onclick = () => { if (!state.start) { state.start = Date.now(); save(); } run(); openQ(0); };
 $("q0").onclick = () => openQ(0);
 $("q1").onclick = () => openQ(1);
+$("openNow").onclick = () => { $("blocked").classList.add("hidden"); openQ(0, LOGIN); };
 let armed = false;
 $("finish").onclick = () => {
   if (!armed) { armed = true; $("finish").textContent = "Click again to finish"; setTimeout(() => { armed = false; $("finish").textContent = "Finish test"; }, 4000); return; }
@@ -121,7 +109,10 @@ $("finish").onclick = () => {
 
 // A finished or expired attempt resets, so the test can be practised again
 if (state.start && (state.done || Date.now() - state.start >= DURATION_SEC * 1000)) { state = {}; save(); }
-if (state.start) run();
+// Exam opens: timer starts at once and CodeChef opens automatically
+if (!state.start) { state.start = Date.now(); save(); }
+run();
+openQ(0, LOGIN);   // CodeChef login first, then it goes straight to the ADSA course
 </script>
 </body>
 </html>
